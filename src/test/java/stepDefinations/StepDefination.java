@@ -3,8 +3,9 @@ package stepDefinations;
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+
+import javax.swing.text.Utilities;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -17,59 +18,48 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import pojo.AddPlace;
-import pojo.Location;
+import resources.APIEnumResources;
+import resources.TestDataBuild;
+import resources.Utils;
 
-public class StepDefination {
+public class StepDefination extends Utils {
 	
 	RequestSpecification res;
 	ResponseSpecification resspec;
 	Response response;
+	TestDataBuild data = new TestDataBuild();
+	static String place_id;
+
 	
-	@Given("Add place Payload")
-	public void add_place_payload() {
+	
+	@Given("Add place Payload with {string} {string} {string}")
+	public void add_place_payload_with(String name, String language, String address) throws IOException {
 		
-
-
-		RestAssured.baseURI="https://rahulshettyacademy.com";
-		
-		AddPlace p = new AddPlace(); 
-		p.setAccuracy(50); 
-		p.setAddress("29, side layout, cohen 09");
-		p.setLanguage("French-IN");
-		p.setName("Frontline house");
-		p.setPhoneno("(+91) 983 893 3937");
-		p.setWebsite("https://rahulshettyacademy.com");
-		
-		List<String> myList=new ArrayList<String>(); 
-		myList.add("shoe park"); 
-		myList.add("shop"); 
-		p.setTypes(myList); 
-		
-		Location loc = new Location();
-		loc.setLat(-38.383494); 
-		loc.setLang(33.427362); 
-		p.setLocation(loc);
-		
-		RequestSpecification req = new RequestSpecBuilder()
-				.setBaseUri("https://rahulshettyacademy.com")
-				.addQueryParam("key", "qaclick123")
-				.setContentType(ContentType.JSON)
-				.build();
-		
-				resspec = new ResponseSpecBuilder()
-				.expectStatusCode(200)
-				.expectContentType(ContentType.JSON).build();
-		
-		res = given().log().all()
-				.spec(req)
-				.body(p);
+		res = given()
+				.spec(requestSpecification())
+				.body(data.addPlacePayLoad(name, language, address));
 		
 	}
-	@When("user calls {string} with post http request")
-	public void user_calls_with_post_http_request(String string) {
-		response = res.when().post("/maps/api/place/add/json")
-		.then().log().all().spec(resspec).extract().response(); 
+	@When("user calls {string} with {string} http request")
+	public void user_calls_with_http_request(String resource, String method) {
+		
+		//const will be called with value of resource which u pass
+		
+		APIEnumResources enumResourceAPI = APIEnumResources.valueOf(resource);
+		System.out.println(enumResourceAPI.getResource());
+		
+		RestAssured.baseURI="https://rahulshettyacademy.com";
+		resspec = new ResponseSpecBuilder()
+		.expectStatusCode(200)
+		.expectContentType(ContentType.JSON).build();
+		
+		if(method.equalsIgnoreCase("POST"))
+		
+		response = res.when().post(enumResourceAPI.getResource());
+		
+		else if(method.equalsIgnoreCase("GET"))
+			response = res.when().get(enumResourceAPI.getResource());
+
 	}
 	@Then("the API call got success with status code {int}")
 	public void the_api_call_got_success_with_status_code(Integer int1) {
@@ -80,9 +70,33 @@ public class StepDefination {
 	@Then("{string} in response body is {string}")
 	public void in_response_body_is(String expectedkey, String expectedvalue) {
 	    // Write code here that turns the phrase above into concrete actions
-	    String resp=response.asString();
-	    JsonPath jp = new JsonPath(resp); 
-	    assertEquals(jp.get(expectedkey).toString(), expectedvalue);
-	}
 
+	    assertEquals(getJsonPath(response, expectedkey), expectedvalue);
+	}
+	
+	@Then("verify place_id created maps to {string} using {string}")
+	public void verify_place_id_created_maps_to_using(String expectedName, String resource) throws IOException {
+		
+		
+		place_id = getJsonPath(response, "place_id");
+		
+		System.out.println("place_id: "+place_id);
+		
+		res = given()
+				.spec(requestSpecification())
+				.queryParam("place_id", place_id);
+		
+		user_calls_with_http_request(resource, "GET");
+		String actualName = getJsonPath(response, "name");
+		assertEquals(actualName, expectedName);
+
+	}
+	
+	@Given("Deleteplace Payload")
+	public void deleteplace_payload() throws IOException {
+		
+		res = given().spec(requestSpecification()).body(data.deletePlacePayload(place_id));
+		
+		}
+	
 }

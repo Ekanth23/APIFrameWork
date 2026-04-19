@@ -7,12 +7,11 @@ public class AddPlace {
 	private  Location location;
 	private  int accuracy;
 	private  String name;
-	private  String phoneno;
+	private  String phone_number;
 	private  String address;
 	private  List<String> types;
 	private  String website;
 	private  String language;
-	
 	
 	public Location getLocation() {
 		return location;
@@ -32,11 +31,11 @@ public class AddPlace {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getPhoneno() {
-		return phoneno;
+	public String getPhone_number() {
+		return phone_number;
 	}
-	public void setPhoneno(String phoneno) {
-		this.phoneno = phoneno;
+	public void setPhone_number(String phone_number) {
+		this.phone_number = phone_number;
 	}
 	public String getAddress() {
 		return address;
@@ -62,6 +61,9 @@ public class AddPlace {
 	public void setLanguage(String language) {
 		this.language = language;
 	}
+	
+	
+
 
 
 
