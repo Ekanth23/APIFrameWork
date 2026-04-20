@@ -2,17 +2,27 @@ package pojo;
 
 import java.util.List;
 
+/**
+ * AddPlace is a POJO (Plain Old Java Object) class used to represent the request payload for the Add Place API.
+ * It is primarily used for serialization, where Java objects are converted into JSON before sending the API request using Rest Assured.
+ * The class contains private member variables that correspond to the fields in the JSON payload, along with public getter and setter methods for each variable.
+ * OOP Concepts:
+ * - Encapsulation: Private fields with public getters/setters to control access.
+ * - Composition: Contains a Location object as a field, demonstrating has-a relationship.
+ * Framework Feature: POJOs enable easy mapping between Java objects and JSON for API payloads.
+ */
 public class AddPlace {
-	
-	private  Location location;
+	// Private fields for encapsulation
+	private  Location location; // Composition: Has-a Location
 	private  int accuracy;
 	private  String name;
 	private  String phone_number;
 	private  String address;
-	private  List<String> types;
+	private  List<String> types; // List for multiple types
 	private  String website;
 	private  String language;
 	
+	// Getter and setter methods for each field
 	public Location getLocation() {
 		return location;
 	}
@@ -66,7 +76,5 @@ public class AddPlace {
 
 
 
-
-		
 
 }

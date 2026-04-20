@@ -5,8 +5,12 @@
   <groupId>bdd</groupId>
   <artifactId>APIFramework</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <!-- Build configuration for Maven project -->
+  <!-- Includes plugins for test execution and reporting -->
   <build>
         <plugins>
+            <!-- Maven Surefire Plugin: Executes unit tests -->
+            <!-- Framework Feature: Configured to ignore test failures for continuous integration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -14,6 +18,8 @@
                     <testFailureIgnore>true</testFailureIgnore>
                 </configuration>
             </plugin>
+            <!-- Cucumber Reporting Plugin: Generates HTML reports from Cucumber JSON output -->
+            <!-- Framework Feature: Automates report generation in verify phase for BDD test results -->
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
@@ -51,16 +57,19 @@
             </plugin>
         </plugins>
     </build>
+  <!-- Dependencies section: Lists all required libraries -->
   <dependencies>
   
-    <!-- Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
+    <!-- Rest Assured: Library for API testing with fluent API -->
+    <!-- Framework Feature: Core dependency for HTTP request/response handling -->
 <dependency>
     <groupId>io.rest-assured</groupId>
     <artifactId>rest-assured</artifactId>
     <version>6.0.0</version>
 </dependency>
 
-<!-- Source: https://mvnrepository.com/artifact/junit/junit -->
+<!-- JUnit: Unit testing framework -->
+<!-- Framework Feature: Provides assertions and test runner for Java tests -->
 <dependency>
     <groupId>junit</groupId>
     <artifactId>junit</artifactId>
@@ -68,7 +77,8 @@
     <scope>test</scope>
 </dependency>
 
-<!-- Source: https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
+<!-- Cucumber Java: BDD framework for Java -->
+<!-- Framework Feature: Enables writing tests in Gherkin language -->
 <dependency>
     <groupId>io.cucumber</groupId>
     <artifactId>cucumber-java</artifactId>
@@ -76,7 +86,8 @@
     <scope>compile</scope>
 </dependency>
 
-<!-- Source: https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
+<!-- Cucumber JUnit: Integration between Cucumber and JUnit -->
+<!-- Framework Feature: Allows running Cucumber scenarios as JUnit tests -->
 <dependency>
     <groupId>io.cucumber</groupId>
     <artifactId>cucumber-junit</artifactId>
@@ -84,7 +95,8 @@
     <scope>test</scope>
 </dependency>
 
-<!-- Source: https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind -->
+<!-- Jackson Databind: JSON processing library -->
+<!-- Framework Feature: Used for serialization/deserialization of POJOs to/from JSON -->
 <dependency>
     <groupId>tools.jackson.core</groupId>
     <artifactId>jackson-databind</artifactId>
@@ -92,7 +104,8 @@
     <scope>compile</scope>
 </dependency>
 
-<!-- Source: https://mvnrepository.com/artifact/org.codehaus.groovy/groovy -->
+<!-- Groovy: Scripting language for JVM -->
+<!-- Framework Feature: May be used for dynamic scripting in tests -->
 <dependency>
     <groupId>org.codehaus.groovy</groupId>
     <artifactId>groovy</artifactId>
